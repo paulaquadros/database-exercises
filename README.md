@@ -15,5 +15,5 @@ Script SQL incluso com algumas inserções de dados para facilitar.
 
 `http://localhost:3000/[table]/`
 
-[`http://localhost:3000/[table]/[id]`
+`http://localhost:3000/[table]/[id]`
 

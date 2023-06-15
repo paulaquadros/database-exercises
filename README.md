@@ -4,12 +4,8 @@ Rodar o comando:
 
 `npm start`
 
-As tabelas são:
+Testes feitos com aplicativo
 
-## Categoria
+## Insomnia
 
-## Vendas
-
-## Produtos
-
-## Clientes
+As tabelas são: Categoria, Clientes, Produtos e Vendas.

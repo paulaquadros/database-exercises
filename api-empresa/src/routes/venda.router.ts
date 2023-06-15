@@ -1,50 +1,56 @@
-import express from "express";
+import express, { Request, Response, Router } from "express";
 import Venda from "../models/venda";
 
-const router = express.Router();
+const router: Router = Router();
 
-// Listar todas as vendas
-router.get("/vendas", async (req, res) => {
-  const vendas = await Venda.findAll();
-  res.json(vendas);
-});
-
-// Criar uma nova venda
-router.post("/vendas", async (req, res) => {
-  const venda = await Venda.create(req.body);
-  res.json(venda);
-});
-
-// Obter detalhes de uma venda por ID
-router.get("/vendas/:id", async (req, res) => {
-  const venda = await Venda.findByPk(req.params.id);
-  if (venda) {
-    res.json(venda);
-  } else {
-    res.status(404).json({ message: "Venda não encontrada" });
+//Listar todas as vendas
+router.get(
+  "/vendas",
+  async (req: Request, res: Response): Promise<Response> => {
+    const allVendas: Venda[] = await Venda.findAll();
+    return res.status(200).json(allVendas);
   }
-});
+);
 
-// Atualizar uma venda por ID
-router.put("/vendas/:id", async (req, res) => {
-  const venda = await Venda.findByPk(req.params.id);
-  if (venda) {
-    await venda.update(req.body);
-    res.json(venda);
-  } else {
-    res.status(404).json({ message: "Venda não encontrada" });
+//Listar uma venda por ID
+router.get(
+  "/vendas/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const vendas: Venda | null = await Venda.findByPk(id);
+    return res.status(200).json(vendas);
   }
-});
+);
 
-// Excluir uma venda por ID
-router.delete("/vendas/:id", async (req, res) => {
-  const venda = await Venda.findByPk(req.params.id);
-  if (venda) {
-    await venda.destroy();
-    res.json({ message: "Venda excluída com sucesso" });
-  } else {
-    res.status(404).json({ message: "Venda não encontrada" });
+//Criar uma venda
+router.post(
+  "/vendas",
+  async (req: Request, res: Response): Promise<Response> => {
+    const vendas: Venda = await Venda.create({ ...req.body });
+    return res.status(201).json(vendas);
   }
-});
+);
+
+//Atualizar uma venda por ID
+router.put(
+  "/vendas/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    await Venda.update({ ...req.body }, { where: { id } });
+    const updatedVendas: Venda | null = await Venda.findByPk(id);
+    return res.status(200).json(updatedVendas);
+  }
+);
+
+//Excluir uma venda por ID
+router.delete(
+  "/vendas/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const deletedVendas: Venda | null = await Venda.findByPk(id);
+    await Venda.destroy({ where: { id } });
+    return res.status(200).json(deletedVendas);
+  }
+);
 
 export default router;

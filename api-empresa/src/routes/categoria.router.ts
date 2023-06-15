@@ -1,50 +1,56 @@
-import express from "express";
+import express, { Request, Response, Router } from "express";
 import Categoria from "../models/categoria";
 
-const router = express.Router();
+const router: Router = Router();
 
-// Listar todas as categorias
-router.get("/categorias", async (req, res) => {
-  const categorias = await Categoria.findAll();
-  res.json(categorias);
-});
-
-// Criar uma nova categoria
-router.post("/categorias", async (req, res) => {
-  const categoria = await Categoria.create(req.body);
-  res.json(categoria);
-});
-
-// Obter detalhes de uma categoria por ID
-router.get("/categorias/:id", async (req, res) => {
-  const categoria = await Categoria.findByPk(req.params.id);
-  if (categoria) {
-    res.json(categoria);
-  } else {
-    res.status(404).json({ message: "Categoria não encontrada" });
+//Listar todas as categorias
+router.get(
+  "/categorias",
+  async (req: Request, res: Response): Promise<Response> => {
+    const allCategorias: Categoria[] = await Categoria.findAll();
+    return res.status(200).json(allCategorias);
   }
-});
+);
 
-// Atualizar uma categoria por ID
-router.put("/categorias/:id", async (req, res) => {
-  const categoria = await Categoria.findByPk(req.params.id);
-  if (categoria) {
-    await categoria.update(req.body);
-    res.json(categoria);
-  } else {
-    res.status(404).json({ message: "Categoria não encontrada" });
+//Lista uma categoria por ID
+router.get(
+  "/categorias/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const categoria: Categoria | null = await Categoria.findByPk(id);
+    return res.status(200).json(categoria);
   }
-});
+);
 
-// Excluir uma categoria por ID
-router.delete("/categorias/:id", async (req, res) => {
-  const categoria = await Categoria.findByPk(req.params.id);
-  if (categoria) {
-    await categoria.destroy();
-    res.json({ message: "Categoria excluída com sucesso" });
-  } else {
-    res.status(404).json({ message: "Categoria não encontrada" });
+//Criar uma nova categoria
+router.post(
+  "/categorias",
+  async (req: Request, res: Response): Promise<Response> => {
+    const categoria: Categoria = await Categoria.create({ ...req.body });
+    return res.status(201).json(categoria);
   }
-});
+);
+
+//Atualizar uma categoria por ID
+router.put(
+  "/categorias/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    await Categoria.update({ ...req.body }, { where: { id } });
+    const updatedCategorias: Categoria | null = await Categoria.findByPk(id);
+    return res.status(200).json(updatedCategorias);
+  }
+);
+
+//Excluir uma categoria por ID
+router.delete(
+  "/categorias/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const deletedCategoria: Categoria | null = await Categoria.findByPk(id);
+    await Categoria.destroy({ where: { id } });
+    return res.status(200).json(deletedCategoria);
+  }
+);
 
 export default router;

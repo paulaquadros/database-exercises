@@ -1,50 +1,56 @@
-import express from "express";
+import express, { Request, Response, Router } from "express";
 import Cliente from "../models/cliente";
 
-const router = express.Router();
+const router: Router = Router();
 
-// Listar todos os clientes
-router.get("/clientes", async (req, res) => {
-  const clientes = await Cliente.findAll();
-  res.json(clientes);
-});
-
-// Criar um novo cliente
-router.post("/clientes", async (req, res) => {
-  const cliente = await Cliente.create(req.body);
-  res.json(cliente);
-});
-
-// Obter detalhes de um cliente por ID
-router.get("/clientes/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id);
-  if (cliente) {
-    res.json(cliente);
-  } else {
-    res.status(404).json({ message: "Cliente não encontrado" });
+//Listar todos os clientes
+router.get(
+  "/clientes",
+  async (req: Request, res: Response): Promise<Response> => {
+    const allClientes: Cliente[] = await Cliente.findAll();
+    return res.status(200).json(allClientes);
   }
-});
+);
 
-// Atualizar um cliente por ID
-router.put("/clientes/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id);
-  if (cliente) {
-    await cliente.update(req.body);
-    res.json(cliente);
-  } else {
-    res.status(404).json({ message: "Cliente não encontrado" });
+//Listar um cliente por ID
+router.get(
+  "/clientes/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const cliente: Cliente | null = await Cliente.findByPk(id);
+    return res.status(200).json(cliente);
   }
-});
+);
 
-// Excluir um cliente por ID
-router.delete("/clientes/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id);
-  if (cliente) {
-    await cliente.destroy();
-    res.json({ message: "Cliente excluído com sucesso" });
-  } else {
-    res.status(404).json({ message: "Cliente não encontrado" });
+//Criar um novo cliente
+router.post(
+  "/clientes",
+  async (req: Request, res: Response): Promise<Response> => {
+    const cliente: Cliente = await Cliente.create({ ...req.body });
+    return res.status(201).json(cliente);
   }
-});
+);
+
+//Atualizar um cliente por ID
+router.put(
+  "/clientes/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    await Cliente.update({ ...req.body }, { where: { id } });
+    const updatedClientes: Cliente | null = await Cliente.findByPk(id);
+    return res.status(200).json(updatedClientes);
+  }
+);
+
+//Excluir um cliente por ID
+router.delete(
+  "/clientes/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const deletedCliente: Cliente | null = await Cliente.findByPk(id);
+    await Cliente.destroy({ where: { id } });
+    return res.status(200).json(deletedCliente);
+  }
+);
 
 export default router;

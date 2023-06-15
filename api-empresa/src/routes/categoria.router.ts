@@ -33,22 +33,26 @@ router.post(
 
 //Atualizar uma categoria por ID
 router.put(
-  "/categorias/:id",
+  "/categorias/:idCategoria",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    await Categoria.update({ ...req.body }, { where: { id } });
-    const updatedCategorias: Categoria | null = await Categoria.findByPk(id);
+    const { idCategoria } = req.params;
+    await Categoria.update({ ...req.body }, { where: { idCategoria } });
+    const updatedCategorias: Categoria | null = await Categoria.findByPk(
+      idCategoria
+    );
     return res.status(200).json(updatedCategorias);
   }
 );
 
 //Excluir uma categoria por ID
 router.delete(
-  "/categorias/:id",
+  "/categorias/:idCategoria",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const deletedCategoria: Categoria | null = await Categoria.findByPk(id);
-    await Categoria.destroy({ where: { id } });
+    const { idCategoria } = req.params;
+    const deletedCategoria: Categoria | null = await Categoria.findByPk(
+      idCategoria
+    );
+    await Categoria.destroy({ where: { idCategoria } });
     return res.status(200).json(deletedCategoria);
   }
 );

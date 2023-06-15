@@ -33,22 +33,22 @@ router.post(
 
 //Atualizar um cliente por ID
 router.put(
-  "/clientes/:id",
+  "/clientes/:idCliente",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    await Cliente.update({ ...req.body }, { where: { id } });
-    const updatedClientes: Cliente | null = await Cliente.findByPk(id);
+    const { idCliente } = req.params;
+    await Cliente.update({ ...req.body }, { where: { idCliente } });
+    const updatedClientes: Cliente | null = await Cliente.findByPk(idCliente);
     return res.status(200).json(updatedClientes);
   }
 );
 
 //Excluir um cliente por ID
 router.delete(
-  "/clientes/:id",
+  "/clientes/:idCliente",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const deletedCliente: Cliente | null = await Cliente.findByPk(id);
-    await Cliente.destroy({ where: { id } });
+    const { idCliente } = req.params;
+    const deletedCliente: Cliente | null = await Cliente.findByPk(idCliente);
+    await Cliente.destroy({ where: { idCliente } });
     return res.status(200).json(deletedCliente);
   }
 );

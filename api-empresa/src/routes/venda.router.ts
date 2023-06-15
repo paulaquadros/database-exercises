@@ -33,22 +33,22 @@ router.post(
 
 //Atualizar uma venda por ID
 router.put(
-  "/vendas/:id",
+  "/vendas/:idVenda",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    await Venda.update({ ...req.body }, { where: { id } });
-    const updatedVendas: Venda | null = await Venda.findByPk(id);
+    const { idVenda } = req.params;
+    await Venda.update({ ...req.body }, { where: { idVenda } });
+    const updatedVendas: Venda | null = await Venda.findByPk(idVenda);
     return res.status(200).json(updatedVendas);
   }
 );
 
 //Excluir uma venda por ID
 router.delete(
-  "/vendas/:id",
+  "/vendas/:idVenda",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const deletedVendas: Venda | null = await Venda.findByPk(id);
-    await Venda.destroy({ where: { id } });
+    const { idVenda } = req.params;
+    const deletedVendas: Venda | null = await Venda.findByPk(idVenda);
+    await Venda.destroy({ where: { idVenda } });
     return res.status(200).json(deletedVendas);
   }
 );

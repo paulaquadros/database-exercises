@@ -33,22 +33,22 @@ router.post(
 
 //Atualizar um produto por ID
 router.put(
-  "/produtos/:id",
+  "/produtos/:idProduto",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    await Produto.update({ ...req.body }, { where: { id } });
-    const updatedProdutos: Produto | null = await Produto.findByPk(id);
+    const { idProduto } = req.params;
+    await Produto.update({ ...req.body }, { where: { idProduto } });
+    const updatedProdutos: Produto | null = await Produto.findByPk(idProduto);
     return res.status(200).json(updatedProdutos);
   }
 );
 
 //Excluir um produto por ID
 router.delete(
-  "/produtos/:id",
+  "/produtos/:idProduto",
   async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const deletedProdutos: Produto | null = await Produto.findByPk(id);
-    await Produto.destroy({ where: { id } });
+    const { idProduto } = req.params;
+    const deletedProdutos: Produto | null = await Produto.findByPk(idProduto);
+    await Produto.destroy({ where: { idProduto } });
     return res.status(200).json(deletedProdutos);
   }
 );

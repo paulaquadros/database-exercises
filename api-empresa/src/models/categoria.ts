@@ -11,11 +11,9 @@ import Produto from "./produto";
 
 @Table
 class Categoria extends Model {
-  @IsUUID("all")
   @PrimaryKey
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV1,
+    type: DataType.INTEGER,
   })
   idCategoria!: number;
 

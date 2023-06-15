@@ -1,7 +1,7 @@
 import { Api } from "./server";
 import Connection from "./db/config";
 
-Connection.sync() // Aqui é onde sincronizamos nossa base de dados com o Mysql
+Connection.sync() //sincronizando o banco de dados com o sequelize
   .then(() => {
     console.log("Conexão com o banco de dados estabelecida :D");
   })
@@ -11,6 +11,7 @@ Connection.sync() // Aqui é onde sincronizamos nossa base de dados com o Mysql
   });
 
 const start = async (): Promise<void> => {
+  //iniciando o servidor
   try {
     new Api().server.listen(3000, () => {
       console.log("Server started on port 3000");

@@ -1,9 +1,16 @@
 import express from "express";
-import { router } from "routes/router";
+import bodyParser from "body-parser";
+import categoriaRouter from "./routes/categoria.router";
+import clienteRouter from "./routes/cliente.router";
+import produtoRouter from "./routes/produto.router";
+import vendaRouter from "./routes/venda.router";
+
+const app = express();
+
 export class Api {
   public server: express.Application;
   constructor() {
-    this.server = express();
+    this.server = app;
     this.middleware();
     this.router();
   }
@@ -11,6 +18,10 @@ export class Api {
     this.server.use(express.json());
   }
   private router() {
-    this.server.use(router);
+    this.server.use(bodyParser.json());
+    this.server.use(categoriaRouter);
+    this.server.use(clienteRouter);
+    this.server.use(produtoRouter);
+    this.server.use(vendaRouter);
   }
 }

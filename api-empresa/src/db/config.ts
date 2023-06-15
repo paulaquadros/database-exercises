@@ -1,12 +1,17 @@
 import { Sequelize } from "sequelize-typescript";
-import { Funcionarios } from "../models/funcionario";
+import Categoria from "../models/categoria";
+import Cliente from "../models/cliente";
+import Produto from "../models/produto";
+import Venda from "../models/venda";
+
 const connection = new Sequelize({
   dialect: "mysql",
-  host: HOST,
-  username: USUARIO_MYSQL,
-  password: SENHA,
-  database: BANCO,
+  host: "localhost",
+  username: "root",
+  password: "@Momo1337",
+  database: "LojaVirtual",
   logging: false,
-  models: [Funcionarios],
+  models: [Categoria, Cliente, Produto, Venda],
 });
+
 export default connection;
